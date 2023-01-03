@@ -1,12 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { NavigationContainer } from "@react-navigation/native";
+import { RootSiblingParent } from "react-root-siblings";
+
+import Navigation from "./src/components/Navigation"
+
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <RootSiblingParent>
+      <NavigationContainer>
+        <Navigation />
+          <StatusBar style="auto" />
+      </NavigationContainer>
+    </RootSiblingParent>
   );
 }
 
