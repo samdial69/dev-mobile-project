@@ -24,7 +24,8 @@
     "react-root-siblings": "^0.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@babel/core": "^7.12.9",
+    "react-native-flatlist-slider": "^1.0.6"
   },
   "private": true
 }
