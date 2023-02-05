@@ -33,7 +33,7 @@ function CameraStack() {
       <CameraNavigation.Screen
         name="ViewActionCamera"
         component={ActionPage}
-        options={{ title: "Choix" }}
+        options={{ title: "Camera" }}
       />
       <CameraNavigation.Screen
         name="ViewAction"
