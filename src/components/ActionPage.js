@@ -2,7 +2,6 @@ import React, {useEffect, useRef, useState} from "react";
 import {Image, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
 import {Entypo, MaterialCommunityIcons, MaterialIcons} from "@expo/vector-icons";
 
-
 import Colors from "../definitions/Colors";
 import {Camera, CameraType} from "expo-camera";
 import Assets from "../definitions/Assets";
@@ -57,6 +56,7 @@ const ActionPage = ({ navigation }) => {
   const sendPicture = async (image) => {
     console.log(image);
     const data = await getImages(image);
+    navigation.navigate('ViewResult', { imageUri: image });
     // console.log(data);
   }
 

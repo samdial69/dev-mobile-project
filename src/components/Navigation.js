@@ -9,6 +9,7 @@ import Colors from "../definitions/Colors";
 import Assets from "../definitions/Assets";
 import HistoryPage from "./HistoryPage";
 import ActionPage from "./ActionPage";
+import ResultPage from "../ResultPage";
 
 const HomeNavigation = createStackNavigator();
 const CameraNavigation = createStackNavigator();
@@ -36,11 +37,15 @@ function CameraStack() {
         options={{ title: "Camera" }}
       />
       <CameraNavigation.Screen
-        name="ViewAction"
+        name="ViewChoice"
         component={ActionPage}
         options={{ title: "Choix" }}
       />
-      
+      <CameraNavigation.Screen
+        name="ViewResult"
+        component={ResultPage}
+        options={{ title: "Resultat" }}
+      />
     </CameraNavigation.Navigator>
   );
 }
