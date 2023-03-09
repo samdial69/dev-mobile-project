@@ -1,7 +1,7 @@
 import axios from "axios";
 import FormData from 'form-data';
 
-const getImages = async (image) => {
+export const getImages = (image) => {
     let API_USER = '849946062';
     let API_SECRET = 'T8ivwJyEnthUrDNShnQo';
     let uriParts = image.split('.');
@@ -17,7 +17,7 @@ const getImages = async (image) => {
     formData.append('api_user', API_USER);
     formData.append('api_secret', API_SECRET);
     try {
-        axios(
+        return axios(
             {
                 method: 'post',
                 url:'https://api.sightengine.com/1.0/check.json',
@@ -27,11 +27,6 @@ const getImages = async (image) => {
                     'Content-Type': 'multipart/form-data',
                 }
             }
-        ).then((response) => {
-            console.log(response.data);
-        }).catch((error) => {
-                console.log(error);
-            }
         )
 
     } catch (error) {
@@ -39,4 +34,13 @@ const getImages = async (image) => {
     }
 }
 
-export default getImages;
+export const getColorName = async (color) => {
+    try {
+        const response = await fetch(`https://www.thecolorapi.com/id?hex=${color}`);
+        return await response.json();
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
