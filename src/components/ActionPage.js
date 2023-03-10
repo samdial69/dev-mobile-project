@@ -4,6 +4,7 @@ import {Entypo, MaterialCommunityIcons, MaterialIcons} from "@expo/vector-icons"
 
 import Colors from "../definitions/Colors";
 import {Camera, CameraType} from "expo-camera";
+import * as MediaLibrary from 'expo-media-library';
 import Assets from "../definitions/Assets";
 import {getColorName, getImages} from "../api/http";
 
@@ -53,9 +54,27 @@ const ActionPage = ({ navigation }) => {
     }
   }
 
+  const saveImageLocally = (imageUri) => {
+    // Get the file name and path of the image
+    const fileName = imageUri.split("/").pop();
+    const filePath = IMAGE_DIR + fileName;
+  
+    // Copy the image to the app directory using react-native-fs
+    return RNFS.copyFile(imageUri, filePath)
+      .then(() => {
+        console.log("Image copied to", filePath);
+        return filePath;
+      })
+      .catch((err) => {
+        console.log("CopyFile error:", err);
+        return null;
+      });
+  };
+
   const sendPicture = async (image) => {
     const dataResponse = await getImages(image);
     let colorsList = getColorsList(dataResponse.data.colors);
+    await MediaLibrary.saveToLibraryAsync(image);
     navigation.navigate('ViewResult', { imageUri: image,dataParam: dataResponse.data, colorsList: colorsList });
   }
 
