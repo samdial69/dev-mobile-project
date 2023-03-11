@@ -4,6 +4,7 @@ import {Entypo, MaterialCommunityIcons, MaterialIcons} from "@expo/vector-icons"
 
 import Colors from "../definitions/Colors";
 import {Camera, CameraType} from "expo-camera";
+import * as MediaLibrary from 'expo-media-library';
 import Assets from "../definitions/Assets";
 import {getColorName, getImages} from "../api/http";
 
@@ -56,6 +57,7 @@ const ActionPage = ({ navigation }) => {
   const sendPicture = async (image) => {
     const dataResponse = await getImages(image);
     let colorsList = getColorsList(dataResponse.data.colors);
+    await MediaLibrary.saveToLibraryAsync(image);
     navigation.navigate('ViewResult', { imageUri: image,dataParam: dataResponse.data, colorsList: colorsList });
   }
 
