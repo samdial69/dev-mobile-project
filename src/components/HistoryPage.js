@@ -11,11 +11,6 @@ import * as MediaLibrary from 'expo-media-library';
 import { Camera } from 'expo-camera';
 import {getColorName, getImages} from "../api/http";
 
-import * as Permissions from 'expo-permissions';
-import * as ImagePicker from 'expo-image-picker';
-
-import Colors from "../definitions/Colors";
-
 const HistoryPage = ({ navigation }) => {
   const [images, setImages] = useState([]);
   const [image, setImage] = useState(null);
