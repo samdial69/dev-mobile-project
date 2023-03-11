@@ -4,10 +4,12 @@ import {
   StyleSheet,
   Button, 
   FlatList,
-  Image
+  Image,
+  TouchableOpacity
 } from "react-native";
 import * as MediaLibrary from 'expo-media-library';
 import { Camera } from 'expo-camera';
+import {getColorName, getImages} from "../api/http";
 
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
@@ -16,6 +18,7 @@ import Colors from "../definitions/Colors";
 
 const HistoryPage = ({ navigation }) => {
   const [images, setImages] = useState([]);
+  const [image, setImage] = useState(null);
 
   const fetchImages = async () => {
     try {
@@ -36,6 +39,36 @@ const HistoryPage = ({ navigation }) => {
     }
   };
 
+  const viewImage = async (image) => {
+    try {
+      setImage(image);
+      const dataResponse = await getImages(image);
+      let colorsList = getColorsList(dataResponse.data.colors);
+      console.log(`Navigating to image: ${image}`);
+      navigation.navigate('ViewResult', { imageUri: image, dataParam: dataResponse.data, colorsList: colorsList });
+    } catch (error) {
+      console.log('Error navigating to view image:', error);
+    }
+  };
+  
+
+  const getColorsList = (colors) => {
+    let colorsList = [];
+    if (colors !== undefined && colors !== null){
+      if (colors.dominant !== undefined && colors.dominant !== null){
+        colorsList.push(colors.dominant.hex.substring(1));
+      }
+      if (colors.accent !== undefined && colors.accent !== null){
+          colorsList.push(colors.accent[0].hex.substring(1));
+      }
+      if (colors.other !== undefined && colors.other !== null){
+          colorsList.push(colors.other[0].hex.substring(1));
+      }
+    }
+    return colorsList;
+  }
+
+
   useEffect(() => {
     fetchImages();
   }, []);
@@ -50,10 +83,9 @@ const HistoryPage = ({ navigation }) => {
           keyExtractor={(item) => item.id}
           numColumns={3}
           renderItem={({ item }) => (
-            <Image
-              source={{ uri: item.uri }}
-              style={styles.historyPageImg}
-            />
+            <TouchableOpacity onPress={() => viewImage(item.uri)}>
+              <Image source={{ uri: item.uri }} style={styles.historyPageImg} />
+            </TouchableOpacity>
           )}
         />
       </View>

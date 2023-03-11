@@ -58,6 +58,11 @@ function HistoryStack() {
           component={HistoryPage}
           options={{ title: "Historiques" }}
         />
+        <HistoryNavigation.Screen
+          name="ViewResult"
+          component={ResultPage}
+          options={{ title: "Resultat" }}
+        />
       </HistoryNavigation.Navigator>
     );
 }
