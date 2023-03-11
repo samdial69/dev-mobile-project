@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, Image, StyleSheet, ListView, FlatList} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import {getColorName, getImages} from "./api/http";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 const ColoredCircle = ({ color, label }) => (
     <View style={styles.circleContainer}>
@@ -35,8 +37,9 @@ const ResultPage = ({navigation}) => {
                 }
             }
             const arr = getArrayOfColors(colorsList, colorsName);
-            setArrayOfColors(arr)
-            console.log(arrayOfColors)
+            setArrayOfColors(arr);
+            saveColors(arr);
+            console.log(arrayOfColors);
         })();
     }, []);
 
@@ -47,6 +50,16 @@ const ResultPage = ({navigation}) => {
         }
         return arrayOfColors;
     }
+
+    const saveColors = async (colors) => {
+        try {
+          await AsyncStorage.setItem('colors', JSON.stringify(colors));
+          console.log('Colors saved successfully');
+        } catch (error) {
+          console.log('Error saving colors: ', error);
+        }
+    };
+      
 
     return (
         <View style={styles.container}>

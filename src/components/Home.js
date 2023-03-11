@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   TextInput,
@@ -13,11 +13,34 @@ import {
 } from "react-native";
 import PrintImage from "./flatListSlider/PrintImage";
 import {FlatListSlider} from 'react-native-flatlist-slider';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getColorName, getImages} from "../api/http";
 
 import Colors from "../definitions/Colors";
 
 const Home = ({ navigation }) => {
+  const [savedColors, setSavedColors] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const savedColorsData = await AsyncStorage.getItem('colors');
+        const parsedSavedColors = JSON.parse(savedColorsData);
+        setSavedColors(parsedSavedColors);
+        const promises = parsedSavedColors.map(colorObj => getColorName(colorObj.color));
+        const results = await Promise.all(promises);
+        const namedColors = results.map(result => result.name.value);
+        const updatedSavedColors = parsedSavedColors.map((colorObj, index) => ({
+          ...colorObj,
+          color: namedColors[index],
+          namedColor: namedColors[index]
+        }));
+        setSavedColors(updatedSavedColors);
+      } catch (error) {
+        console.log('Error retrieving saved colors:', error);
+      }
+    })();
+  }, []);
 
   const images = [
     {
@@ -78,11 +101,11 @@ const Home = ({ navigation }) => {
           Vos couleurs populaires
         </Text>
         <FlatList
-          data={DATA}
+          data={savedColors}
           renderItem={({ item }) => (
-            <View style={styles.ColorItem} >
-              <View style={[styles.ColorRound,{backgroundColor: item.color}]}/>
-              <Text style={styles.ColorTitle}>{item.title}</Text>
+            <View style={styles.ColorItem} key={item.id}>
+              <View style={[styles.ColorRound,{backgroundColor: "#" + item.color}]}/>
+              <Text style={styles.ColorTitle}>{item.namedColor}</Text>
             </View>
           )}
           keyExtractor={item => item.id}
@@ -122,7 +145,7 @@ const styles = StyleSheet.create({
   ColorRound: {
     width: 50,
     height: 50,
-    borderRadius: 150 / 2,
+    borderRadius: 65,
   },
   ColorTitle: {
     textAlignVertical: "center",
