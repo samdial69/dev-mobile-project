@@ -22,7 +22,6 @@ const ResultPage = ({navigation}) => {
     const [colorsName, setColorsName] = useState([]);
     const [arrayOfColors, setArrayOfColors] = useState([]);
 
-
     useEffect(() => {
         (async () => {
             setColorsName([]);
@@ -39,16 +38,23 @@ const ResultPage = ({navigation}) => {
             const arr = getArrayOfColors(colorsList, colorsName);
             setArrayOfColors(arr);
             saveColors(arr);
+            try {
+                await AsyncStorage.setItem('images', JSON.stringify(image));
+                console.log(await AsyncStorage.getItem('images'));
+            } catch (error) {
+                console.log('Error saving images: ', error);
+            }
             console.log(arrayOfColors);
         })();
     }, []);
 
     const getArrayOfColors = (colorsList, colorsName) => {
-       setArrayOfColors([])
+        const arr = [];
         for (let i = 0; i < colorsList.length; i++) {
-            arrayOfColors.push({color: colorsList[i], name: colorsName[i]});
+          arr.push({color: colorsList[i], name: colorsName[i]});
         }
-        return arrayOfColors;
+        setArrayOfColors(arr);
+        return arr;
     }
 
     const saveColors = async (colors) => {
@@ -60,6 +66,14 @@ const ResultPage = ({navigation}) => {
         }
     };
       
+    const saveImages = async (image) => {
+        try {
+          await AsyncStorage.setItem('images', JSON.stringify(image));
+          console.log('Images saved successfully');
+        } catch (error) {
+          console.log('Error saving images: ', error);
+        }
+    };
 
     return (
         <View style={styles.container}>
@@ -69,9 +83,15 @@ const ResultPage = ({navigation}) => {
             <View style={styles.bottom}>
                 <Text style={styles.title}>Couleurs :</Text>
                 <View style={styles.circles}>
-                    <FlatList data={arrayOfColors}
-                              renderItem={({item}) => <ColoredCircle color={item.color} label={item.name}/> }
-                              keyExtractor={item => item.color}
+                    <FlatList 
+                        data={arrayOfColors}
+                        horizontal={true}
+                        renderItem={({item}) => (
+                            <View style={styles.colorsCircle}>
+                                <ColoredCircle color={item.color} label={item.name}/> 
+                            </View>
+                        )}
+                        keyExtractor={item => item.color}
                     />
                 </View>
                 <View style={styles.otherInfoContainer}>
@@ -127,6 +147,9 @@ const styles = StyleSheet.create({
   circleContainer: {
     alignItems: "center",
     justifyContent: "center",
+  },
+  colorsCircle: {
+    marginRight: 10,
   },
   otherInfoContainer: {
     marginTop: 20,
