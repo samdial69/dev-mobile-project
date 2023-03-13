@@ -24,7 +24,7 @@ export default (PrintImage = ({
       <View style={[styles.imageContainer, styles.shadow]}>
         <Image
           style={[styles.videoPreview, active ? {} : {height: 120}]}
-          source={{uri: item[imageKey]}}
+          source={{uri: item.parsedSavedImages}}
         />
       </View>
     </TouchableOpacity>
