@@ -89,7 +89,7 @@ const Home = ({ navigation }) => {
 
 
         <Text style={styles.headTitle2}>
-          Dernires couleurs recherchées
+          Dernières couleurs recherchées
         </Text>
         <FlatList
           data={savedColors}
