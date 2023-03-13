@@ -56,7 +56,7 @@ function HistoryStack() {
         <HistoryNavigation.Screen
           name="ViewHistory"
           component={HistoryPage}
-          options={{ title: "Historiques" }}
+          options={{ title: "Galerie" }}
         />
         <HistoryNavigation.Screen
           name="ViewResult"
