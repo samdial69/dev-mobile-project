@@ -3,6 +3,7 @@ import {View, Text, Image, StyleSheet, ListView, FlatList} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import {getColorName, getImages} from "./api/http";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 const ColoredCircle = ({ color, label }) => (
@@ -31,6 +32,17 @@ const ResultPage = ({navigation}) => {
           male_chest: '',
           miniskirt: '',
         },
+      });
+      const [textInfos, setTextInfos] = useState({
+        drug: [],
+        extremism: [],
+        ignored_text: false,
+        link: [],
+        medical: [],
+        personal: [],
+        profanity: [],
+        social: [],
+        weapon: [],
       });
 
     useEffect(() => {
@@ -64,6 +76,9 @@ const ResultPage = ({navigation}) => {
                 if (dataResponse.data.nudity) {
                     setNudity(dataResponse.data.nudity);
                 }
+                if(dataResponse.data.text) {
+                    setTextInfos(dataResponse.data.text);
+                }
             }
         })();
     }, []);
@@ -96,42 +111,57 @@ const ResultPage = ({navigation}) => {
     };
 
     return (
-        <View style={styles.container}>
-            <View style={styles.imageContainer}>
-                <Image source={{uri: image}} style={styles.image} resizeMode={'contain'}/>
-            </View>
-            <View style={styles.bottom}>
-                <Text style={styles.title}>Couleurs :</Text>
-                <View style={styles.circles}>
-                    <FlatList 
-                        data={arrayOfColors}
-                        horizontal={true}
-                        renderItem={({item}) => (
-                            <View style={styles.colorsCircle}>
-                                <ColoredCircle color={item.color} label={item.name}/> 
+        <ScrollView>
+            <View style={styles.container}>
+                <View style={styles.imageContainer}>
+                    <Image source={{uri: image}} style={styles.image} resizeMode={'contain'}/>
+                </View>
+                <View style={styles.bottom}>
+                    <Text style={styles.title}>Couleurs :</Text>
+                    <View style={styles.circles}>
+                        <FlatList 
+                            data={arrayOfColors}
+                            horizontal={true}
+                            renderItem={({item}) => (
+                                <View style={styles.colorsCircle}>
+                                    <ColoredCircle color={item.color} label={item.name}/> 
+                                </View>
+                            )}
+                            keyExtractor={item => item.color}
+                        />
+                    </View>
+                    <View style={styles.otherInfoContainer}>
+                        <Text style={styles.title}>Autres informations :</Text>
+                        <View style={styles.otherInfoTextContainer}>
+                        {nudity !== '' && (
+                            <View style={styles.otherInfoTextContainer}>
+                                <Text style={styles.otherInfoText}>Nudité : {((nudity.erotica)*100).toFixed(1)} %</Text>
+                                <Text style={styles.otherInfoText}>Suggestive: {((nudity.suggestive)*100).toFixed(1)} %</Text>
+                                <Text style={styles.otherInfoText}>Bikini: {((nudity.suggestive_classes.bikini)*100).toFixed(1)} %</Text>
+                                <Text style={styles.otherInfoText}>Décolleté: {((nudity.suggestive_classes.cleavage)*100).toFixed(1)} %</Text>
+                                <Text style={styles.otherInfoText}>Lingerie: {((nudity.suggestive_classes.lingerie)*100).toFixed(1)} %</Text>
+                                <Text style={styles.otherInfoText}>Poitrine homme: {((nudity.suggestive_classes.male_chest)*100).toFixed(1)} %</Text>
+                                <Text style={styles.otherInfoText}>Mini jupe: {((nudity.suggestive_classes.miniskirt)*100).toFixed(1)} %</Text>
                             </View>
                         )}
-                        keyExtractor={item => item.color}
-                    />
-                </View>
-                <View style={styles.otherInfoContainer}>
-                    <Text style={styles.title}>Autres informations :</Text>
-                    <View style={styles.otherInfoTextContainer}>
-                    {nudity !== '' && (
-                        <View style={styles.otherInfoTextContainer}>
-                            <Text style={styles.otherInfoText}>Nudité : {((nudity.erotica)*100).toFixed(1)} %</Text>
-                            <Text style={styles.otherInfoText}>Suggestive: {((nudity.suggestive)*100).toFixed(1)} %</Text>
-                            <Text style={styles.otherInfoText}>Bikini: {((nudity.suggestive_classes.bikini)*100).toFixed(1)} %</Text>
-                            <Text style={styles.otherInfoText}>Décolleté: {((nudity.suggestive_classes.cleavage)*100).toFixed(1)} %</Text>
-                            <Text style={styles.otherInfoText}>Lingerie: {((nudity.suggestive_classes.lingerie)*100).toFixed(1)} %</Text>
-                            <Text style={styles.otherInfoText}>Poitrine homme: {((nudity.suggestive_classes.male_chest)*100).toFixed(1)} %</Text>
-                            <Text style={styles.otherInfoText}>Mini jupe: {((nudity.suggestive_classes.miniskirt)*100).toFixed(1)} %</Text>
+                        {textInfos !== '' && (
+                            <View style={styles.textInfosContainer}>
+                                <Text style={styles.otherInfoText}>Drogue : {textInfos.drug.length > 0 ? "Oui" : "Non"}</Text>
+                                <Text style={styles.otherInfoText}>Extremisme: {textInfos.extremism.length > 0 ? "Oui" : "Non"}</Text>
+                                <Text style={styles.otherInfoText}>Ignored_text: {textInfos.ignored_text ? "Oui" : "Non"}</Text>
+                                <Text style={styles.otherInfoText}>Link: {textInfos.link.length > 0 ? "Oui" : "Non"}</Text>
+                                <Text style={styles.otherInfoText}>Medical: {textInfos.medical.length > 0 ? "Oui" : "Non"}</Text>
+                                <Text style={styles.otherInfoText}>Personal: {textInfos.personal.length > 0 ? "Oui" : "Non"}</Text>
+                                <Text style={styles.otherInfoText}>Profanité: {textInfos.profanity.length > 0 ? "Oui" : "Non"}</Text>
+                                <Text style={styles.otherInfoText}>Social: {textInfos.social.length > 0 ? "Oui" : "Non"}</Text>
+                                <Text style={styles.otherInfoText}>Armes: {textInfos.weapon.length > 0 ? "Oui" : "Non"}</Text>
+                            </View>
+                        )}
                         </View>
-                    )}
                     </View>
                 </View>
             </View>
-        </View>
+        </ScrollView>
     );
 };
 
@@ -186,6 +216,11 @@ const styles = StyleSheet.create({
   otherInfoTextContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    flexGrow: 1,
+  },
+  textInfosContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   otherInfoText: {
     backgroundColor: "#E8E8E8",
@@ -202,7 +237,7 @@ const styles = StyleSheet.create({
   },
   nudityInfos: {
     flexDirection: 'row',
-
+    overflow: 'scroll',
     flexWrap: 'wrap',
   },
 });
