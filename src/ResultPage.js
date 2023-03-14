@@ -21,6 +21,17 @@ const ResultPage = ({navigation}) => {
 
     const [colorsName, setColorsName] = useState([]);
     const [arrayOfColors, setArrayOfColors] = useState([]);
+    const [nudity, setNudity] = useState({
+        erotica: '',
+        suggestive: '',
+        suggestive_classes: {
+          bikini: '',
+          cleavage: '',
+          lingerie: '',
+          male_chest: '',
+          miniskirt: '',
+        },
+      });
 
     useEffect(() => {
         (async () => {
@@ -45,6 +56,15 @@ const ResultPage = ({navigation}) => {
                 console.log('Error saving images: ', error);
             }
             console.log(arrayOfColors);
+
+            //Informations of image 
+            const dataResponse = await getImages(image);
+            console.log(dataResponse);
+            if (dataResponse) {
+                if (dataResponse.data.nudity) {
+                    setNudity(dataResponse.data.nudity);
+                }
+            }
         })();
     }, []);
 
@@ -97,9 +117,17 @@ const ResultPage = ({navigation}) => {
                 <View style={styles.otherInfoContainer}>
                     <Text style={styles.title}>Autres informations :</Text>
                     <View style={styles.otherInfoTextContainer}>
-                        <Text style={styles.otherInfoText}>Info ici</Text>
-                        <Text style={styles.otherInfoText}>Info ici</Text>
-                        <Text style={styles.otherInfoText}>Info ici</Text>
+                    {nudity !== '' && (
+                        <View style={styles.otherInfoTextContainer}>
+                            <Text style={styles.otherInfoText}>Nudité : {((nudity.erotica)*100).toFixed(1)} %</Text>
+                            <Text style={styles.otherInfoText}>Suggestive: {((nudity.suggestive)*100).toFixed(1)} %</Text>
+                            <Text style={styles.otherInfoText}>Bikini: {((nudity.suggestive_classes.bikini)*100).toFixed(1)} %</Text>
+                            <Text style={styles.otherInfoText}>Décolleté: {((nudity.suggestive_classes.cleavage)*100).toFixed(1)} %</Text>
+                            <Text style={styles.otherInfoText}>Lingerie: {((nudity.suggestive_classes.lingerie)*100).toFixed(1)} %</Text>
+                            <Text style={styles.otherInfoText}>Poitrine homme: {((nudity.suggestive_classes.male_chest)*100).toFixed(1)} %</Text>
+                            <Text style={styles.otherInfoText}>Mini jupe: {((nudity.suggestive_classes.miniskirt)*100).toFixed(1)} %</Text>
+                        </View>
+                    )}
                     </View>
                 </View>
             </View>
@@ -166,11 +194,17 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     paddingTop: 5,
     paddingBottom: 5,
+    marginBottom: 5,
     alignItems: "center",
     textAlign: "center",
     borderRadius: 35,
     fontWeight: "bold",
-  }
+  },
+  nudityInfos: {
+    flexDirection: 'row',
+
+    flexWrap: 'wrap',
+  },
 });
 
 export default ResultPage;
