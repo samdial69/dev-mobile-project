@@ -133,25 +133,20 @@ const ResultPage = ({navigation}) => {
                     <View style={styles.otherInfoContainer}>
                         <Text style={styles.title}>Autres informations :</Text>
                         <View style={styles.otherInfoTextContainer}>
+                            <Text style={styles.subTitle}>Nudité :</Text>
                         {nudity !== '' && (
                             <View style={styles.otherInfoTextContainer}>
                                 <Text style={styles.otherInfoText}>Nudité : {((nudity.erotica)*100).toFixed(1)} %</Text>
                                 <Text style={styles.otherInfoText}>Suggestive: {((nudity.suggestive)*100).toFixed(1)} %</Text>
-                                <Text style={styles.otherInfoText}>Bikini: {((nudity.suggestive_classes.bikini)*100).toFixed(1)} %</Text>
                                 <Text style={styles.otherInfoText}>Décolleté: {((nudity.suggestive_classes.cleavage)*100).toFixed(1)} %</Text>
-                                <Text style={styles.otherInfoText}>Lingerie: {((nudity.suggestive_classes.lingerie)*100).toFixed(1)} %</Text>
                                 <Text style={styles.otherInfoText}>Poitrine homme: {((nudity.suggestive_classes.male_chest)*100).toFixed(1)} %</Text>
-                                <Text style={styles.otherInfoText}>Mini jupe: {((nudity.suggestive_classes.miniskirt)*100).toFixed(1)} %</Text>
                             </View>
                         )}
+                            <Text style={styles.subTitle}>Contenues textes :</Text>
                         {textInfos !== '' && (
                             <View style={styles.textInfosContainer}>
-                                <Text style={styles.otherInfoText}>Drogue : {textInfos.drug.length > 0 ? "Oui" : "Non"}</Text>
                                 <Text style={styles.otherInfoText}>Extremisme: {textInfos.extremism.length > 0 ? "Oui" : "Non"}</Text>
-                                <Text style={styles.otherInfoText}>Ignored_text: {textInfos.ignored_text ? "Oui" : "Non"}</Text>
-                                <Text style={styles.otherInfoText}>Link: {textInfos.link.length > 0 ? "Oui" : "Non"}</Text>
-                                <Text style={styles.otherInfoText}>Medical: {textInfos.medical.length > 0 ? "Oui" : "Non"}</Text>
-                                <Text style={styles.otherInfoText}>Personal: {textInfos.personal.length > 0 ? "Oui" : "Non"}</Text>
+                                <Text style={styles.otherInfoText}>Personel: {textInfos.personal.length > 0 ? "Oui" : "Non"}</Text>
                                 <Text style={styles.otherInfoText}>Profanité: {textInfos.profanity.length > 0 ? "Oui" : "Non"}</Text>
                                 <Text style={styles.otherInfoText}>Social: {textInfos.social.length > 0 ? "Oui" : "Non"}</Text>
                                 <Text style={styles.otherInfoText}>Armes: {textInfos.weapon.length > 0 ? "Oui" : "Non"}</Text>
@@ -187,6 +182,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 16,
+  },
+  subTitle: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    marginBottom: 5,
   },
   circles: {
     flexDirection: 'row',
