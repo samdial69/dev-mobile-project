@@ -3,6 +3,7 @@ import {View, Text, Image, StyleSheet, ListView, FlatList} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import {getColorName, getImages} from "./api/http";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 const ColoredCircle = ({ color, label }) => (
@@ -21,6 +22,28 @@ const ResultPage = ({navigation}) => {
 
     const [colorsName, setColorsName] = useState([]);
     const [arrayOfColors, setArrayOfColors] = useState([]);
+    const [nudity, setNudity] = useState({
+        erotica: '',
+        suggestive: '',
+        suggestive_classes: {
+          bikini: '',
+          cleavage: '',
+          lingerie: '',
+          male_chest: '',
+          miniskirt: '',
+        },
+      });
+      const [textInfos, setTextInfos] = useState({
+        drug: [],
+        extremism: [],
+        ignored_text: false,
+        link: [],
+        medical: [],
+        personal: [],
+        profanity: [],
+        social: [],
+        weapon: [],
+      });
 
     useEffect(() => {
         (async () => {
@@ -45,6 +68,18 @@ const ResultPage = ({navigation}) => {
                 console.log('Error saving images: ', error);
             }
             console.log(arrayOfColors);
+
+            //Informations of image 
+            const dataResponse = await getImages(image);
+            console.log(dataResponse);
+            if (dataResponse) {
+                if (dataResponse.data.nudity) {
+                    setNudity(dataResponse.data.nudity);
+                }
+                if(dataResponse.data.text) {
+                    setTextInfos(dataResponse.data.text);
+                }
+            }
         })();
     }, []);
 
@@ -76,34 +111,52 @@ const ResultPage = ({navigation}) => {
     };
 
     return (
-        <View style={styles.container}>
-            <View style={styles.imageContainer}>
-                <Image source={{uri: image}} style={styles.image} resizeMode={'contain'}/>
-            </View>
-            <View style={styles.bottom}>
-                <Text style={styles.title}>Couleurs :</Text>
-                <View style={styles.circles}>
-                    <FlatList 
-                        data={arrayOfColors}
-                        horizontal={true}
-                        renderItem={({item}) => (
-                            <View style={styles.colorsCircle}>
-                                <ColoredCircle color={item.color} label={item.name}/> 
+        <ScrollView>
+            <View style={styles.container}>
+                <View style={styles.imageContainer}>
+                    <Image source={{uri: image}} style={styles.image} resizeMode={'contain'}/>
+                </View>
+                <View style={styles.bottom}>
+                    <Text style={styles.title}>Couleurs :</Text>
+                    <View style={styles.circles}>
+                        <FlatList 
+                            data={arrayOfColors}
+                            horizontal={true}
+                            renderItem={({item}) => (
+                                <View style={styles.colorsCircle}>
+                                    <ColoredCircle color={item.color} label={item.name}/> 
+                                </View>
+                            )}
+                            keyExtractor={item => item.color}
+                        />
+                    </View>
+                    <View style={styles.otherInfoContainer}>
+                        <Text style={styles.title}>Autres informations :</Text>
+                        <View style={styles.otherInfoTextContainer}>
+                            <Text style={styles.subTitle}>Nudité :</Text>
+                        {nudity !== '' && (
+                            <View style={styles.otherInfoTextContainer}>
+                                <Text style={styles.otherInfoText}>Nudité : {((nudity.erotica)*100).toFixed(1)} %</Text>
+                                <Text style={styles.otherInfoText}>Suggestive: {((nudity.suggestive)*100).toFixed(1)} %</Text>
+                                <Text style={styles.otherInfoText}>Décolleté: {((nudity.suggestive_classes.cleavage)*100).toFixed(1)} %</Text>
+                                <Text style={styles.otherInfoText}>Poitrine homme: {((nudity.suggestive_classes.male_chest)*100).toFixed(1)} %</Text>
                             </View>
                         )}
-                        keyExtractor={item => item.color}
-                    />
-                </View>
-                <View style={styles.otherInfoContainer}>
-                    <Text style={styles.title}>Autres informations :</Text>
-                    <View style={styles.otherInfoTextContainer}>
-                        <Text style={styles.otherInfoText}>Info ici</Text>
-                        <Text style={styles.otherInfoText}>Info ici</Text>
-                        <Text style={styles.otherInfoText}>Info ici</Text>
+                            <Text style={styles.subTitle}>Contenues textes :</Text>
+                        {textInfos !== '' && (
+                            <View style={styles.textInfosContainer}>
+                                <Text style={styles.otherInfoText}>Extremisme: {textInfos.extremism.length > 0 ? "Oui" : "Non"}</Text>
+                                <Text style={styles.otherInfoText}>Personel: {textInfos.personal.length > 0 ? "Oui" : "Non"}</Text>
+                                <Text style={styles.otherInfoText}>Profanité: {textInfos.profanity.length > 0 ? "Oui" : "Non"}</Text>
+                                <Text style={styles.otherInfoText}>Social: {textInfos.social.length > 0 ? "Oui" : "Non"}</Text>
+                                <Text style={styles.otherInfoText}>Armes: {textInfos.weapon.length > 0 ? "Oui" : "Non"}</Text>
+                            </View>
+                        )}
+                        </View>
                     </View>
                 </View>
             </View>
-        </View>
+        </ScrollView>
     );
 };
 
@@ -129,6 +182,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 16,
+  },
+  subTitle: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    marginBottom: 5,
   },
   circles: {
     flexDirection: 'row',
@@ -158,6 +216,11 @@ const styles = StyleSheet.create({
   otherInfoTextContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    flexGrow: 1,
+  },
+  textInfosContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   otherInfoText: {
     backgroundColor: "#E8E8E8",
@@ -166,11 +229,17 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     paddingTop: 5,
     paddingBottom: 5,
+    marginBottom: 5,
     alignItems: "center",
     textAlign: "center",
     borderRadius: 35,
     fontWeight: "bold",
-  }
+  },
+  nudityInfos: {
+    flexDirection: 'row',
+    overflow: 'scroll',
+    flexWrap: 'wrap',
+  },
 });
 
 export default ResultPage;

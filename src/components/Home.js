@@ -32,7 +32,7 @@ const Home = ({ navigation }) => {
         const promises = parsedSavedColors.map(colorObj => getColorName(colorObj.color));
         const results = await Promise.all(promises);
         const namedColors = results.map(result => result.name.value);
-        const updatedSavedColors = parsedSavedColors.map((colorObj, index) => ({
+        const updatedSavedColors = parsedSavedColors && parsedSavedColors.map((colorObj, index) => ({
           ...colorObj,
           color: namedColors[index],
           namedColor: namedColors[index]

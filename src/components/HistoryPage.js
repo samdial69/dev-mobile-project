@@ -17,7 +17,7 @@ const HistoryPage = ({ navigation }) => {
 
   const fetchImages = async () => {
     try {
-      const { status } = await Camera.requestCameraPermissionsAsync();
+      const { status } = await MediaLibrary.requestPermissionsAsync();
 
       if (status !== 'granted') {
         alert('Permission not granted!');
