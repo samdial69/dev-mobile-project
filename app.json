@@ -18,12 +18,19 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "We need to access your microphone to enable speech recognition and TTS.",
+        "NSSpeakersUsageDescription": "We need to access your speaker to play TTS."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#FFFFFF",
+        "permissions": [
+          "RECORD_AUDIO"
+        ]
       }
     },
     "web": {

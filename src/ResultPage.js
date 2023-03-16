@@ -1,17 +1,30 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Image, StyleSheet, ListView, FlatList} from 'react-native';
+import {View, Text, Image, StyleSheet, ListView, FlatList, TouchableOpacity} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import {getColorName, getImages} from "./api/http";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ScrollView } from 'react-native-gesture-handler';
+import * as Speech from 'expo-speech';
 
+const ColoredCircle = ({ color, label }) => {
+  const speakText = async () => {
+    try {
+      await Speech.speak("C'est la couleur :" + label);
+      console.log('Coleye speak to say :', label);
+    } catch (error) {
+      console.log('Error in speech recognition:', error);
+    }
+  }  
 
-const ColoredCircle = ({ color, label }) => (
+  return (
     <View style={styles.circleContainer}>
-      <View style={{ ...styles.circle, backgroundColor: `#`+color }} />
-      <Text style={styles.label}>{label}</Text>
+      <TouchableOpacity onPress={speakText}>
+        <View style={{ ...styles.circle, backgroundColor: `#`+color }} />
+        <Text style={styles.label}>{label}</Text>
+      </TouchableOpacity>
     </View>
-);
+  );
+ }
 
 const ResultPage = ({navigation}) => {
     const route = useRoute();
@@ -69,6 +82,8 @@ const ResultPage = ({navigation}) => {
             }
             console.log(arrayOfColors);
 
+            
+
             //Informations of image 
             const dataResponse = await getImages(image);
             console.log(dataResponse);
@@ -108,6 +123,19 @@ const ResultPage = ({navigation}) => {
         } catch (error) {
           console.log('Error saving images: ', error);
         }
+    };
+
+    const playSound = () => {
+      const sound = new Sound(item.sound, Sound.MAIN_BUNDLE, (error) => {
+        if (error) {
+          console.log('Failed to load the sound', error);
+          return;
+        }
+        sound.play(() => {
+          sound.release();
+        });
+      });
+      Tts.speak(item.name);
     };
 
     return (
@@ -171,6 +199,15 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: 300,
+  },
+  colorStyle: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    padding: "8px",
+    borderRadius: "4px",
+    boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
   },
   bottom: {
     flex: 1,
