@@ -187,15 +187,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 300,
   },
-  colorStyle: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    padding: "8px",
-    borderRadius: "4px",
-    boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
-  },
   bottom: {
     flex: 1,
     paddingTop: 16,
