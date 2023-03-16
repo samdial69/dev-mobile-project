@@ -1,17 +1,30 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Image, StyleSheet, ListView, FlatList} from 'react-native';
+import {View, Text, Image, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import {getColorName, getImages} from "./api/http";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ScrollView } from 'react-native-gesture-handler';
+import * as Speech from 'expo-speech';
 
+const ColoredCircle = ({ color, label }) => {
+  const speakText = async () => {
+    try {
+      await Speech.speak("C'est la couleur :" + label);
+      console.log('Coleye speak to say :', label);
+    } catch (error) {
+      console.log('Error during speech:', error);
+    }
+  }  
 
-const ColoredCircle = ({ color, label }) => (
+  return (
     <View style={styles.circleContainer}>
-      <View style={{ ...styles.circle, backgroundColor: `#`+color }} />
-      <Text style={styles.label}>{label}</Text>
+      <TouchableOpacity onPress={speakText}>
+        <View style={{ ...styles.circle, backgroundColor: `#`+color }} />
+        <Text style={styles.label}>{label}</Text>
+      </TouchableOpacity>
     </View>
-);
+  );
+ }
 
 const ResultPage = ({navigation}) => {
     const route = useRoute();
@@ -68,6 +81,8 @@ const ResultPage = ({navigation}) => {
                 console.log('Error saving images: ', error);
             }
             console.log(arrayOfColors);
+
+            
 
             //Informations of image 
             const dataResponse = await getImages(image);

@@ -8,7 +8,6 @@ import {
   TouchableOpacity
 } from "react-native";
 import * as MediaLibrary from 'expo-media-library';
-import { Camera } from 'expo-camera';
 import {getColorName, getImages} from "../api/http";
 
 const HistoryPage = ({ navigation }) => {
