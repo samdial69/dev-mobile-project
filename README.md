@@ -1,14 +1,18 @@
 # COLEYE PROJECT
 
 ## Description
-App mobile permettant de prendre une photo, de la traiter et faire ressortir les couleurs dominantes dans cette image.
+App mobile permettant de prendre une photo, de la traiter et faire ressortir les couleurs dominantes dans cette image. 
+
+Objectif : Facilité la vie des personnes daltoniens.
 
 ## Fonctionnalités
-- Prendre une photo en utilisant la caméra du téléphone et envoyer la photo à une API qui nous retournera les couleurs dominantes de l'image.
+-Prendre une photo en utilisant la caméra du téléphone et envoyer la photo à une API qui nous retournera les couleurs dominantes de l'image et certaines informations comme la présence de texte insultant, de nudité, etc.
+- L'appui sur les différentes couleurs permet aussi d'avoir un retour vocal décrivant la couleur.
 - Utiliser les photos de la galerie du téléphone.
-- Historique des photos prises sur l'accueil.
+- Historique de la dernière photo prise et ses couleurs sur la page d'accueil.
 - Score des couleurs dominantes de nos différentes images.
 - Une photothèque dans l'application avec les photos prises et les photos chargées depuis la galerie.
+
 
 ## Développement
 - [ ] Design de l'application.
