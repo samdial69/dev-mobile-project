@@ -26,5 +26,4 @@ Objectif : Facilité la vie des personnes daltoniennes.
 ![image](https://user-images.githubusercontent.com/47609360/210363637-c175cbc9-6191-497e-b20e-824512fef008.png)
 
      
-- [ ] Tester l'API de https://sightengine.com/.
-- [ ] Développement de l'application.
+- [ ] API : https://sightengine.com/.
