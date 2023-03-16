@@ -12,7 +12,7 @@ const ColoredCircle = ({ color, label }) => {
       await Speech.speak("C'est la couleur :" + label);
       console.log('Coleye speak to say :', label);
     } catch (error) {
-      console.log('Error in speech recognition:', error);
+      console.log('Error during speech:', error);
     }
   }  
 
