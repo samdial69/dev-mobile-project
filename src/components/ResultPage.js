@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, Image, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import {getColorName, getImages} from "./api/http";
+import {getColorName, getImages} from "../api/http";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ScrollView } from 'react-native-gesture-handler';
 import * as Speech from 'expo-speech';
