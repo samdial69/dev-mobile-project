@@ -9,7 +9,7 @@ import Colors from "../definitions/Colors";
 import Assets from "../definitions/Assets";
 import HistoryPage from "./HistoryPage";
 import ActionPage from "./ActionPage";
-import ResultPage from "../ResultPage";
+import ResultPage from "./ResultPage";
 
 const HomeNavigation = createStackNavigator();
 const CameraNavigation = createStackNavigator();
