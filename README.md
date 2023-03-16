@@ -1,9 +1,11 @@
 # COLEYE PROJECT
 
+Auteurs : Mamadou Samba Diallo - Mustan KOC (M2 Génie Informatique - Projet Dev. Mobile)
+
 ## Description
 App mobile permettant de prendre une photo, de la traiter et faire ressortir les couleurs dominantes dans cette image. 
 
-Objectif : Facilité la vie des personnes daltoniens.
+Objectif : Facilité la vie des personnes daltoniennes.
 
 ## Fonctionnalités
 -Prendre une photo en utilisant la caméra du téléphone et envoyer la photo à une API qui nous retournera les couleurs dominantes de l'image et certaines informations comme la présence de texte insultant, de nudité, etc.
