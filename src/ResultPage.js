@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Image, StyleSheet, ListView, FlatList, TouchableOpacity} from 'react-native';
+import {View, Text, Image, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import {getColorName, getImages} from "./api/http";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -123,19 +123,6 @@ const ResultPage = ({navigation}) => {
         } catch (error) {
           console.log('Error saving images: ', error);
         }
-    };
-
-    const playSound = () => {
-      const sound = new Sound(item.sound, Sound.MAIN_BUNDLE, (error) => {
-        if (error) {
-          console.log('Failed to load the sound', error);
-          return;
-        }
-        sound.play(() => {
-          sound.release();
-        });
-      });
-      Tts.speak(item.name);
     };
 
     return (
