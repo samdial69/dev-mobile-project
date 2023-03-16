@@ -15,6 +15,11 @@ Objectif : Facilité la vie des personnes daltoniennes.
 - Score des couleurs dominantes de nos différentes images.
 - Une photothèque dans l'application avec les photos prises et les photos chargées depuis la galerie.
 
+## Installation
+- Cloner le projet sur le lien: https://github.com/samdial69/dev-mobile-project.git
+- Ensuite installer les dependances avec la commande `npm install`
+- Pour lancer l'application, utiliser la commande `expo start`
+
 
 ## Développement
 - [ ] Design de l'application.
